@@ -6,13 +6,13 @@ pipeline {
         CONTAINER_NAME = "fraud-api"
     }
 
-    stages {
-
-        stage('Checkout Code') {
-            steps {
-                git 'https://github.com/rp7398/real-time-fraud-detection.git'
-            }
-        }
+    stage('Checkout Code') {
+    steps {
+        git branch: 'main',
+            url: 'https://github.com/rp7398/real-time-fraud-detection.git',
+            credentialsId: 'github-token'
+    }
+}
 
         stage('Install Dependencies') {
             steps {
