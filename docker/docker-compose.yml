@@ -1,0 +1,8 @@
+version: "3.8"
+
+services:
+  fraud-api:
+    build: .
+    container_name: fraud_detection_api
+    ports:
+      - "5000:5000"
