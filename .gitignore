@@ -15,4 +15,5 @@ venv/
 # kaggle
 data/
 .kaggle/
+*kaggle.json
 *.zip
