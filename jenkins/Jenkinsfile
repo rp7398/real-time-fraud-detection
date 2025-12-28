@@ -5,6 +5,7 @@ pipeline {
         PYTHON_EXE = 'C:\\Users\\Rajat Pathak\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
         IMAGE_NAME = 'fraud-detection'
         CONTAINER_NAME = 'fraud-api'
+        KAGGLE_CONFIG_DIR = "${WORKSPACE}\\.kaggle"
     }
 
     stages {
@@ -16,9 +17,14 @@ pipeline {
             }
         }
 
-        stage('Verify Python') {
+        stage('Setup Kaggle API') {
             steps {
-                bat '"%PYTHON_EXE%" --version'
+                withCredentials([file(credentialsId: 'kaggle-api', variable: 'KAGGLE_JSON')]) {
+                    bat '''
+                    mkdir %KAGGLE_CONFIG_DIR%
+                    copy %KAGGLE_JSON% %KAGGLE_CONFIG_DIR%\\kaggle.json
+                    '''
+                }
             }
         }
 
@@ -26,12 +32,18 @@ pipeline {
             steps {
                 bat '"%PYTHON_EXE%" -m pip install --upgrade pip'
                 bat '"%PYTHON_EXE%" -m pip install -r requirements.txt'
+                bat '"%PYTHON_EXE%" -m pip install kaggle'
             }
         }
 
-        stage('Run ETL Pipeline') {
+        stage('Download & Ingest Data') {
             steps {
                 bat '"%PYTHON_EXE%" src/ingestion/ingest.py'
+            }
+        }
+
+        stage('Transform Data') {
+            steps {
                 bat '"%PYTHON_EXE%" src/etl/transform.py'
             }
         }
@@ -60,10 +72,10 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline executed successfully'
+            echo 'CI/CD pipeline completed successfully'
         }
         failure {
-            echo 'Pipeline failed'
+            echo 'CI/CD pipeline failed'
         }
     }
 }
