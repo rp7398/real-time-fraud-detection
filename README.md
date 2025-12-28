@@ -3,6 +3,9 @@
 > **An end-to-end, production-grade fraud detection platform built using Machine Learning, Docker, and Jenkins CI/CD.**
 > This project demonstrates the complete lifecycle of a real-world data science system — from raw data ingestion to automated deployment.
 
+🌐 **Live Project Report:**  
+👉 https://rp7398.github.io/report/
+
 ---
 
 ## 📌 Project Overview
