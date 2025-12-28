@@ -1,13 +1,10 @@
 pipeline {
     agent any
 
-    tools {
-        python 'Python310'
-    }
-
     environment {
-        IMAGE_NAME = "fraud-detection"
-        CONTAINER_NAME = "fraud-api"
+        PYTHON_EXE = 'C:\\Users\\Rajat Pathak\\AppData\\Local\\Programs\\Python\\Python310\\python.exe'
+        IMAGE_NAME = 'fraud-detection'
+        CONTAINER_NAME = 'fraud-api'
     }
 
     stages {
@@ -19,24 +16,29 @@ pipeline {
             }
         }
 
+        stage('Verify Python') {
+            steps {
+                bat '"%PYTHON_EXE%" --version'
+            }
+        }
+
         stage('Install Dependencies') {
             steps {
-                bat 'python --version'
-                bat 'python -m pip install --upgrade pip'
-                bat 'python -m pip install -r requirements.txt'
+                bat '"%PYTHON_EXE%" -m pip install --upgrade pip'
+                bat '"%PYTHON_EXE%" -m pip install -r requirements.txt'
             }
         }
 
         stage('Run ETL Pipeline') {
             steps {
-                bat 'python src/ingestion/ingest.py'
-                bat 'python src/etl/transform.py'
+                bat '"%PYTHON_EXE%" src/ingestion/ingest.py'
+                bat '"%PYTHON_EXE%" src/etl/transform.py'
             }
         }
 
         stage('Train Model') {
             steps {
-                bat 'python src/training/train_model.py'
+                bat '"%PYTHON_EXE%" src/training/train_model.py'
             }
         }
 
