@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        python 'Python310'
+    }
+
     environment {
         IMAGE_NAME = "fraud-detection"
         CONTAINER_NAME = "fraud-api"
