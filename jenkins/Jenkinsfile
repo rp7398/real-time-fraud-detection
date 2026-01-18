@@ -1,3 +1,5 @@
+/* groovylint-disable CompileStatic */
+/* groovylint-disable-next-line CompileStatic */
 pipeline {
     agent any
 
